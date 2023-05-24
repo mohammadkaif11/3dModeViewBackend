@@ -12,7 +12,7 @@
   "scripts": {
     "start": "nodemon server.js"
   },
-  "name": "ecommerce",
+  "name": "3dmodelbackend",
   "version": "1.0.0",
   "main": "server.js",
   "keywords": [],
