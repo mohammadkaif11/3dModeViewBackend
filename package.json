@@ -5,11 +5,18 @@
     "env": "^0.0.2",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
-    "mongoose": "*",
-    "nodemon": "^2.0.22",
-    "node":"*"
+    "mongoose": "^6.7.5",
+    "node": "^19.2.0",
+    "nodemon": "^2.0.22"
   },
   "scripts": {
     "start": "nodemon server.js"
-  }
+  },
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "main": "server.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
