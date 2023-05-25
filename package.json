@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "aws-sdk": "^2.1384.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "env": "^0.0.2",
@@ -10,7 +11,7 @@
     "nodemon": "^2.0.22"
   },
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon index.js"
   },
   "name": "3dmodelbackend",
   "version": "1.0.0",

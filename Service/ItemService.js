@@ -1,7 +1,7 @@
 const Model = require("../DataContext/Model/Item");
 
 //Save Model Data
-async function saveModelData(CreatorName,ModelName,ModelFileName,ModelImageName){
+async function saveModelData(CreatorName,ModelName,ModelFileName,ModelImageName,Modelpath,Imagepath){
     try{
         const model=await Model.find({Model_name: ModelName});
         if(model.length>0){
@@ -12,7 +12,9 @@ async function saveModelData(CreatorName,ModelName,ModelFileName,ModelImageName)
             Creator_Name:CreatorName,
             ModelFile_Name:ModelFileName,
             ThumbNail_Name:ModelImageName,
-            dateCreated: new Date()
+            dateCreated: new Date(),
+            ModelFile_Path:Modelpath,
+            ThumbNail_Path:Imagepath
         })
         const data = await product.save();
         console.log(data)

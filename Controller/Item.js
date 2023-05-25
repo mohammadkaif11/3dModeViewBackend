@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
 const router = express.Router();
 const {
@@ -6,6 +8,18 @@ const {
   getModelName,
   getModelByNameandthumbnail,
 } = require("../Service/ItemService");
+
+//AWS Sdk
+const AWS = require("aws-sdk");
+const ID = process.env.AWS_ID;
+const SECRET = process.env.AWS_SECRET;
+const BUCKET_NAME = process.env.BACKET_NAME;
+
+//S3 Bucket
+const s3 = new AWS.S3({
+  accessKeyId: ID,
+  secretAccessKey: SECRET,
+});
 
 router.post("/senddata", saveProducts);
 router.get("/getdata", getModels);
@@ -22,52 +36,68 @@ function saveProducts(req, res) {
     const cname = req.body.name;
     const mname = req.body.modelname;
 
-    // console.log("image", img);
-    // console.log("file", file);
-    // console.log("name", req.body.name);
-    // console.log("dirname", __dirname);
+    //Model Params
+    const ModelParams = {
+      Bucket: BUCKET_NAME,
+      Key: fname,
+      Body: file.data,
+    };
 
-    let uploadpath = process.cwd() + "/upload/3dModels/" + fname;
+    //Image Params
+    const ImageParms = {
+      Bucket: BUCKET_NAME,
+      Key: iname,
+      Body: img.data,
+    };
 
-    console.log(uploadpath);
+    console.log("image", img);
+    console.log("file", file);
+    console.log("name", req.body.name);
+    console.log("dirname", __dirname);
 
-    file.mv(uploadpath, (err) => {
+    let modelPath = "";
+    let ImagePath = "";
+
+    s3.upload(ModelParams, function (err, data) {
       if (err) {
-        res.status(400).json({ message: "Internal Server Error" });
+        console.log("Error uploading file: ", err.message);
+        res.status(400).json({ message: "Server Error" ,error:err.message });
         return;
       } else {
-        console.log("file upload successfully");
+        modelPath = data.Location;
+        console.log("model  sucessfully save", modelPath);
+        s3.upload(ImageParms, function (err, data) {
+          if (err) {
+            console.log("Error uploading file: ", err.message);
+            res.status(400).json({ message: "Server Error" ,error:err.message });
+            return;
+          } else {
+            ImagePath = data.Location;
+            console.log("ImagePath successfully save", ImagePath);
+            saveModelData(cname, mname, fname, iname,modelPath,ImagePath)
+              .then((data) => {
+                if (data == null) {
+                  res
+                    .status(400)
+                    .json({ message: "Model name will be uinque" });
+                  return;
+                } else {
+                  res.status(200).json({ message: "Successfully upload" });
+                  return;
+                }
+              })
+              .catch((err) => {
+                console.log("Saving db",err);
+                res.status(400).json({ message: "Server Error" ,error:err.message });
+              });
+          }
+        });
       }
     });
 
-    uploadpath = process.cwd() + "/upload/image/" + iname;
-
-    img.mv(uploadpath, (err) => {
-      if (err) {
-        res.status(400).json({ message: "Internal Server Error" });
-        return;
-      } else {
-        console.log("image upload successfully");
-      }
-    });
-
-    saveModelData(cname, mname, fname, iname)
-      .then((data) => {
-        if (data == null) {
-          res.status(400).json({ message: "Model name will be uinque" });
-          return;
-        } else {
-          res.status(200).json({ message: "Success Upload" });
-          return;
-        }
-      })
-      .catch((err) => {
-        console.log("error uploading");
-        res.status(400).json({ message: "Server Error" });
-      });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" ,error:error.message });
   }
 }
 
@@ -94,5 +124,19 @@ function getmodelname(req, res) {
       res.status(400).send("Error");
     });
 }
+
+//get file
+router.get("/file/:filename", async (req, res) => {
+  try {
+    const filename = req.params.filename;
+    let x = await s3
+      .getObject({ Bucket: BUCKET_NAME, Key: filename })
+      .promise();
+    res.send(x.Body);
+  } catch (error) {
+    console.log('Error downloading: ',error.message);
+    res.send(error.message);
+  }
+});
 
 module.exports = router;

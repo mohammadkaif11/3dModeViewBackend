@@ -16,6 +16,14 @@ const Models_Shema = mongoose.Schema({
         type:String,
         required:true
     },
+    ModelFile_Path:{
+        type:String,
+        required:true
+    },
+    ThumbNail_Path:{
+        type:String,
+        required:true
+    },
     dateCreated: {
         type: Date,
         required: true
