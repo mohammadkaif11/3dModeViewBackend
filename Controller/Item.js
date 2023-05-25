@@ -21,13 +21,13 @@ function saveProducts(req, res) {
     const iname = img.name;
     const cname = req.body.name;
     const mname = req.body.modelname;
-    
+
     // console.log("image", img);
     // console.log("file", file);
     // console.log("name", req.body.name);
     // console.log("dirname", __dirname);
 
-    let uploadpath = "./upload/3dModels/" + fname;
+    let uploadpath = process.cwd() + "/upload/3dModels/" + fname;
 
     console.log(uploadpath);
 
@@ -35,34 +35,34 @@ function saveProducts(req, res) {
       if (err) {
         res.status(400).json({ message: "Internal Server Error" });
         return;
-      }else{
+      } else {
         console.log("file upload successfully");
       }
     });
 
-    uploadpath ="./upload/image/" + iname;
+    uploadpath = process.cwd() + "/upload/image/" + iname;
 
     img.mv(uploadpath, (err) => {
       if (err) {
         res.status(400).json({ message: "Internal Server Error" });
         return;
-      }else{
+      } else {
         console.log("image upload successfully");
       }
     });
 
     saveModelData(cname, mname, fname, iname)
       .then((data) => {
-        if(data==null){
-            res.status(400).json({ message: "Model name will be uinque" });
-            return;
-        }else{
-            res.status(200).json({ message: "Success Upload" });
-            return;
+        if (data == null) {
+          res.status(400).json({ message: "Model name will be uinque" });
+          return;
+        } else {
+          res.status(200).json({ message: "Success Upload" });
+          return;
         }
       })
       .catch((err) => {
-        console.log("error uploading")
+        console.log("error uploading");
         res.status(400).json({ message: "Server Error" });
       });
   } catch (error) {
