@@ -79,7 +79,7 @@ function saveProducts(req, res) {
                 if (data == null) {
                   res
                     .status(400)
-                    .json({ message: "Model name will be uinque" });
+                    .json({ message: "Model name,Model Image,ThumbNail should be unique" });
                   return;
                 } else {
                   res.status(200).json({ message: "Successfully upload" });

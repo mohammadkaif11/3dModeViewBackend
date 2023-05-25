@@ -3,7 +3,7 @@ const Model = require("../DataContext/Model/Item");
 //Save Model Data
 async function saveModelData(CreatorName,ModelName,ModelFileName,ModelImageName,Modelpath,Imagepath){
     try{
-        const model=await Model.find({Model_name: ModelName});
+        const model=await Model.find().or([{Model_name:ModelName},{ModelFile_Name:ModelFileName},{ThumbNail_Name:ModelImageName}]);
         if(model.length>0){
             return null;
         }
