@@ -4,7 +4,9 @@ const cors = require("cors");
 const fileUpload = require("express-fileupload");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: '*'
+}));
 app.use(express.static("upload/image"));
 app.use(express.static("upload/3dModels"));
 app.use(express.json());
