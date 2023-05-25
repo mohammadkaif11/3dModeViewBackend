@@ -21,12 +21,13 @@ function saveProducts(req, res) {
     const iname = img.name;
     const cname = req.body.name;
     const mname = req.body.modelname;
+    
     // console.log("image", img);
     // console.log("file", file);
     // console.log("name", req.body.name);
     // console.log("dirname", __dirname);
 
-    let uploadpath = process.cwd() + "/upload/3dModels/" + fname;
+    let uploadpath = "./upload/3dModels/" + fname;
 
     console.log(uploadpath);
 
@@ -39,7 +40,7 @@ function saveProducts(req, res) {
       }
     });
 
-    uploadpath = process.cwd() + "/upload/image/" + iname;
+    uploadpath ="./upload/image/" + iname;
 
     img.mv(uploadpath, (err) => {
       if (err) {
