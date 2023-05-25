@@ -13,7 +13,8 @@ app.use(fileUpload());
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("content-type","multipart/form-data");  
+  res.header("content-type","multipart/form-data");
+  res.header("accept","multipart/form-data");  
   next();
 });
 
