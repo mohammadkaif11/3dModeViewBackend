@@ -34,6 +34,8 @@ function saveProducts(req, res) {
       if (err) {
         res.status(400).json({ message: "Internal Server Error" });
         return;
+      }else{
+        console.log("file upload successfully");
       }
     });
 
@@ -43,8 +45,11 @@ function saveProducts(req, res) {
       if (err) {
         res.status(400).json({ message: "Internal Server Error" });
         return;
+      }else{
+        console.log("image upload successfully");
       }
     });
+
     saveModelData(cname, mname, fname, iname)
       .then((data) => {
         if(data==null){
@@ -56,6 +61,7 @@ function saveProducts(req, res) {
         }
       })
       .catch((err) => {
+        console.log("error uploading")
         res.status(400).json({ message: "Server Error" });
       });
   } catch (error) {
