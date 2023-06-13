@@ -23,7 +23,7 @@ const s3 = new AWS.S3({
 
 router.post("/senddata", saveModel);
 router.get("/getdata", getModels);
-router.get("/modelname", getModelName);
+router.get("/modelname", getmodelName);
 
 //Save Models
 function saveModel(req, res) {
@@ -114,7 +114,7 @@ function getModels(req, res) {
 }
 
 //Getmodels by name
-function getModelName(req, res) {
+function getmodelName(req, res) {
   const { id } = req.query;
   getModelName(id)
     .then((data) => {
