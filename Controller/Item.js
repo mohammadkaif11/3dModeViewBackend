@@ -21,12 +21,12 @@ const s3 = new AWS.S3({
   secretAccessKey: SECRET,
 });
 
-router.post("/senddata", saveProducts);
+router.post("/senddata", saveModel);
 router.get("/getdata", getModels);
-router.get("/modelname", getmodelname);
+router.get("/modelname", getModelName);
 
-//Save Products
-function saveProducts(req, res) {
+//Save Models
+function saveModel(req, res) {
   try {
     const Myfile = req.files;
     const file = Myfile.file;
@@ -114,7 +114,7 @@ function getModels(req, res) {
 }
 
 //Getmodels by name
-function getmodelname(req, res) {
+function getModelName(req, res) {
   const { id } = req.query;
   getModelName(id)
     .then((data) => {
@@ -132,7 +132,7 @@ router.get("/file/:filename", async (req, res) => {
     let x = await s3
       .getObject({ Bucket: BUCKET_NAME, Key: filename })
       .promise();
-    res.send(x.Body);
+    res.send(x.Body); 
   } catch (error) {
     console.log('Error downloading: ',error.message);
     res.send(error.message);
